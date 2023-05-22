@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <title>Journal</title>
+    </head>
+    <body>
+        <p>Enter your password: <input type="text" name="secret_key" /></p>
+        <h1>Add New Entry</h1>
+        <form method="POST">{% csrf_token %}
+            <textarea name="plain_text"></textarea>
+            <input type="hidden" name="encrypted_text" />
+            <button onclick="encryptTextAndSubmit()">Save</button>
+        </form>
+        <h1>Existing Entries</h1>
+        <button onclick="decryptEntries()">Decrypt</button>
+        <ul>
+            {% for entry in entries %}
+            <li>
+                <span class="decrypted_text">{{ entry.encrypted_text }}</span>
+                <input type="hidden" name="existing_encrypted_text" value="{{ entry.encrypted_text }}" />
+                <form method="POST">{% csrf_token %}
+                    <input type="hidden" name="entry_to_delete" value="{{ entry.id }}" />
+                    <input type="submit" value="Delete" />
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+    </body>
+    <!-- cryptography library: https://bitwiseshiftleft.github.io/sjcl/ -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sjcl/1.0.8/sjcl.min.js"></script>
+    <script type="text/javascript">
+      function getEncryptionKey() {
+        return document.getElementsByName("secret_key")[0].value;
+      }
+
+      function decryptEntries() {
+        const entryElements = document.getElementsByName("existing_encrypted_text");
+        for (let entry of entryElements) {
+          const node = entry.parentNode.querySelector(".decrypted_text");
+          node.textContent = sjcl.decrypt(getEncryptionKey(), entry.value);
+        }
+      }
+
+      function encryptTextAndSubmit() {
+        const data = document.getElementsByName("plain_text")[0].value;
+        const encryptedText = sjcl.encrypt(getEncryptionKey(), data)
+        const encryptedInput = document.getElementsByName("encrypted_text")[0];
+        encryptedInput.value = encryptedText;
+      }
+    </script>
+</html>

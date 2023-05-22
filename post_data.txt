@@ -1,0 +1,1 @@
+{"category":"Example Category", "name": "Example", "promo": "Cool!", "price": 1.23, "rating": "medium", "tour_length": 5}
