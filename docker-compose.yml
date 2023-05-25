@@ -20,6 +20,9 @@ services:
       - backend
     ports:
       - "8000:8000"
+    volumes:
+      - app_code:/app
+      - sqlite_db:/var/sqlite_db
   celery:
     build:
       context: .
@@ -30,6 +33,12 @@ services:
       - REDIS_HOST=redis
     networks:
       - backend
+    volumes:
+      - app_code:/app
+      - sqlite_db:/var/sqlite_db
 networks:
     backend:
         driver: bridge
+volumes:
+  app_code:
+  sqlite_db:
