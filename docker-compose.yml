@@ -10,6 +10,8 @@ services:
     build:
       context: .
       target: django_app
+    depends_on:
+      - redis
     environment:
       - REDIS_HOST=redis
     expose:
