@@ -17,17 +17,13 @@ RUN pip install -r requirements.txt
 # set working directory for the Django app
 WORKDIR /app/demo
 
-FROM base AS django
-# run the database migrations
-RUN python manage.py migrate
-
-FROM django as django_test
+FROM base as django_test
 # run the tests
 CMD ["python", "manage.py", "test"]
 
-FROM django AS django_app
+FROM base AS django_app
 EXPOSE 8000
-CMD ["python", "manage.py", "runserver", "--noreload", "0.0.0.0:8000"]
+CMD "/bin/bash"
 
 FROM base AS celery
 # run celery
