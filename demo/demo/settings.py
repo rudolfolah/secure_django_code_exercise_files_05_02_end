@@ -82,10 +82,15 @@ WSGI_APPLICATION = 'demo.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+DATABASE_SQLITE_BASE_DIR = os.environ.get('DATABASE_SQLITE_BASE_DIR', BASE_DIR)
+
+DATABASE_DEFAULT_ENGINE = 'django.db.backends.sqlite3'
+DATABASE_DEFAULT_NAME = os.path.join(DATABASE_SQLITE_BASE_DIR, 'db.sqlite3')
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': DATABASE_DEFAULT_ENGINE,
+        'NAME': DATABASE_DEFAULT_NAME,
     }
 }
 
