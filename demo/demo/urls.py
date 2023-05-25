@@ -24,5 +24,4 @@ urlpatterns = [
     # path('journal/', ugc.views.JournalView.as_view()),
     path('admin/', admin.site.urls),
     path('oauth/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    re_path(r'^(?P<path>.*)$', serve, { 'document_root': settings.FRONTEND_ROOT}),
 ]
